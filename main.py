@@ -18,18 +18,3 @@ cv.imshow("frame", frame)
 cv.imwrite("frames/w1.jpg", frame)
 
 cap.release()
-# cv.destroyAllWindows()
-
-
-# fd = streams["best"].open()
-# data = fd.read(1024)
-# # save the data to a file
-
-# c = 0
-# with open("output.ts", "wb") as f:
-# while data and c < 1000:
-# f.write(data)
-# data = fd.read(1024)
-# c += 1
-
-# fd.close()
