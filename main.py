@@ -2,6 +2,8 @@ import streamlink
 import cv2 as cv
 from dotenv import load_dotenv
 import os
+import time
+from datetime import datetime
 
 
 load_dotenv()
@@ -12,9 +14,17 @@ streams = streamlink.streams(
 )
 
 
-cap = cv.VideoCapture(streams["worst"].url)
-ret, frame = cap.read()
-cv.imshow("frame", frame)
-cv.imwrite("frames/w1.jpg", frame)
+def store_frame():
+    print("storing frame...")
+    cap = cv.VideoCapture(
+        streams["worst"].url
+    )  # reinitialize on every capture as it seems to be closed after the first read
+    ret, frame = cap.read()
+    cv.imwrite(f"frames/{datetime.now() }.jpg", frame)
+    cap.release()
 
-cap.release()
+
+while True:
+    store_frame()
+    print("waiting 5 seconds...")
+    time.sleep(5)
