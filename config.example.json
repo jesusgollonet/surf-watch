@@ -1,0 +1,12 @@
+{
+  "webcams": [
+    {
+      "name": "webcam1",
+      "url": "http://"
+    },
+    {
+      "name": "webcam2",
+      "url": "http://"
+    }
+  ]
+}

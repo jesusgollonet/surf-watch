@@ -1,30 +1,36 @@
 import streamlink
 import cv2 as cv
-from dotenv import load_dotenv
-import os
 import time
 from datetime import datetime
+import json
 
 
-load_dotenv()
-
-streams = streamlink.streams(
-    os.getenv("STREAM_URL")
-    or "hls://devstreaming-cdn.apple.com/videos/streaming/examples/bipbop_4x3/bipbop_4x3_variant.m3u8"
-)
+def load_config(config_file):
+    with open(config_file) as f:
+        return json.load(f)
 
 
-def store_frame():
+webcams = load_config(".config.json").get("webcams")
+
+for webcam in webcams:
+    print(webcam.get("url"))
+    webcam["streamlink_url"] = streamlink.streams(webcam.get("url"))["best"].url
+
+
+def store_frame(stream_name, stream_url):
     print("storing frame...")
-    cap = cv.VideoCapture(
-        streams["worst"].url
-    )  # reinitialize on every capture as it seems to be closed after the first read
+    stream_name = stream_name.replace(" ", "_")
+    # reinitialize on every capture as it seems to be closed after the first read
+
+    cap = cv.VideoCapture(stream_url)
     ret, frame = cap.read()
-    cv.imwrite(f"frames/{datetime.now() }.jpg", frame)
+    print(f"storing image in {stream_name}...")
+    cv.imwrite(f"frames/{stream_name}_{datetime.now() }.jpg", frame)
     cap.release()
 
 
 while True:
-    store_frame()
-    print("waiting 5 seconds...")
+    for webcam in webcams:
+        print(webcam.get("url"))
+        store_frame(webcam.get("name"), webcam.get("streamlink_url"))
     time.sleep(5)
