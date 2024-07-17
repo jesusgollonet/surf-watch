@@ -1,1 +1,1 @@
-map ,r :w\|!python main.py<cr>
+map ,r :w\|!python %<cr>
