@@ -1,7 +1,4 @@
-import streamlink
-import cv2 as cv
 import time
-from datetime import datetime
 import json
 from modules import sw_util, capture_frame
 
