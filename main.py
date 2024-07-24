@@ -17,8 +17,12 @@ for webcam in webcams:
     else:
         webcam["m3u8_url"] = sw_util.get_sw_stream_url_for_page(webcam.get("url"))
 
+time.sleep(5)
 while True:
     for webcam in webcams:
-        print(webcam.get("m3u8_url"))
-        capture_frame.capture_frame(webcam.get("m3u8_url"), webcam.get("name"))
+        try:
+            print(webcam.get("m3u8_url"))
+            capture_frame.capture_frame(webcam.get("m3u8_url"), webcam.get("name"))
+        except Exception as e:
+            print("error capturing frame in webcam: ", webcam.get("name"), e)
     time.sleep(5)
